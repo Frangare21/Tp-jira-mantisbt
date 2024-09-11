@@ -3,10 +3,10 @@ name: CI
 on:
   push:
     branches:
-      - main
+      - master
   pull_request:
     branches:
-      - main
+      - master
 
 jobs:
   build:
@@ -27,8 +27,15 @@ jobs:
     - name: Run tests
       run: npm test
 
-    - name: Build Docker image
-      run: docker build . -t node-api
+    # Aquí podrías agregar un paso para notificar a Jira
+    - name: Notify Jira
+      uses: atlassian/gajira-create@v2.0.1
+      with:
+        jira-host: ${{ secrets.JIRA_HOST }}
+        jira-user: ${{ secrets.JIRA_USER }}
+        jira-token: ${{ secrets.JIRA_TOKEN }}
+        project: "NOMBRE_DEL_PROYECTO"
+        summary: "Se ha completado el build para el PR"
+        description: "El pipeline ha sido ejecutado correctamente"
+        issue-type: "Task"
 
-    - name: Run Docker container
-      run: docker run -p 3000:3000 -d node-api
