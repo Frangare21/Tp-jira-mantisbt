@@ -27,7 +27,6 @@ jobs:
     - name: Run tests
       run: npm test
 
-    # Aquí podrías agregar un paso para notificar a Jira
     - name: Notify Jira
       uses: atlassian/gajira-create@v2.0.1
       with:
